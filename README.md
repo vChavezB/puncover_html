@@ -14,7 +14,7 @@ integrate in CI/CD.
 
 ## How to Use
 
-1. Run puncover
+1. Run puncover in a separate terminal or background process
 
 Separate terminal
 
