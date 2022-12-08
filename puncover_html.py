@@ -125,10 +125,11 @@ def generate_html(link):
         html_content = html_content.replace('href="/static', 'href="../static')
         html_content = html_content.replace('href="/"', 'href="../index.html"')
     else:
-        # due to fix_sort_table already adding .. to static
-        html_content = html_content.replace('src="../static', 'src="static')
-        html_content = html_content.replace('href="../static', 'href="static')
+        html_content = html_content.replace('href="/static', 'href="static')
         html_content = html_content.replace('href="/"', 'href="index.html"')
+        html_content = html_content.replace('src="/static', 'src="static')
+	# due to fix_sort_table already adding .. to static
+        html_content = html_content.replace('src="../static', 'src="static')
     html_file_name = replace_html_encode(link[:-1]) + ".html"
     if html_file_name.startswith("/"):
         html_file_name = html_file_name[1:]
