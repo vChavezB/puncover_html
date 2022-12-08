@@ -1,11 +1,11 @@
 # Copyright 2022, Victor Chavez (chavez-bermudez@fh-aachen.de)
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 import requests
 import pathlib
 import re
 import os
 import argparse
+import distutils.dir_util
 
 url_base = "http://127.0.0.1:5000/"
 
@@ -16,12 +16,9 @@ parser = argparse.ArgumentParser(
 parser.add_argument('dir_out')
 args = parser.parse_args()
 
+script_root = pathlib.Path(__file__).resolve().parents[0]
 dir_out = pathlib.Path(args.dir_out)
 dir_out.mkdir(parents=True, exist_ok=True)
-"""
-dir_out = pathlib.Path(args.out_dir).resolve().parents[0]
-dir_out = file_root.absolute().joinpath("html_out")
-"""
 parsed_pages = []
 puncover_links = []
 pending_links = []
@@ -153,11 +150,16 @@ def get_local_html(puncover_url):
 def local_html():
     print("Processing main page")
     pages_dir = dir_out.joinpath("path")
+    static_dir = dir_out.joinpath("static")
     if not os.path.exists(dir_out):
         os.makedirs(dir_out)
     if not os.path.exists(pages_dir):
         os.makedirs(pages_dir)
-    
+    if not os.path.exists(static_dir):
+        os.makedirs(static_dir) 
+    # Copy html static dir (css,js,etc) to output
+    distutils.dir_util.copy_tree(str(script_root.joinpath("static")),
+                                    str(static_dir))
     index = requests.get(url_base)
     index_html_path = dir_out.joinpath("index.html")
     index_file = open(index_html_path, "w+")
