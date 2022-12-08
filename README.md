@@ -18,15 +18,21 @@ integrate in CI/CD.
 
 Separate terminal
 
+```bash
 puncover --elf_file My_Cool_project.elf --gcc_tools_base /my_toolchain/bin/arm-none-eabi-
+```
 
 Background 
 
+```bash
 puncover --elf_file My_Cool_project.elf --gcc_tools_base /my_toolchain/bin/arm-none-eabi- &
+```
 
 2. Run this script
 
-puncover_html.py Your_Desired_out_path
+```bash
+puncover_html.py HTML_OUT_PATH
+```
 
 ## TODOS
 
