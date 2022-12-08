@@ -36,7 +36,6 @@ puncover_html.py HTML_OUT_PATH
 
 ## TODOS
 
-- Fix sort row for the columns stack,code,remarks. Current implementation only sorts code column independent of column clicked. Check static/js/sorttable.js. 
 - Add feature to look for symbols.
 
 

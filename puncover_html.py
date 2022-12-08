@@ -10,9 +10,9 @@ import distutils.dir_util
 url_base = "http://127.0.0.1:5000/"
 
 parser = argparse.ArgumentParser(
-                    prog = 'Puncover offline HTML',
-                    description = 'Builds offline html for puncover',
-                    )
+    prog='Puncover offline HTML',
+    description='Builds offline html for puncover',
+)
 parser.add_argument('dir_out')
 args = parser.parse_args()
 
@@ -22,6 +22,7 @@ dir_out.mkdir(parents=True, exist_ok=True)
 parsed_pages = []
 puncover_links = []
 pending_links = []
+
 
 def replace_static_path(html_raw):
     return html_raw.replace("/static", "static")
@@ -47,40 +48,58 @@ def get_links(html_content):
     return links
 
 
-def fix_sort_table(html_str):
-    thead_start = html_str.find("<thead>")
-    if thead_start == -1:
+def fix_jquery(old_html):
+    script_find = "<script"
+    include_jquery_str = '<script src="/static/js/jquery-3.6.1.min.js"></script>\n'
+    script_start = old_html.find(script_find)
+    new_html = old_html[:script_start] + include_jquery_str + old_html[script_start:]
+    return new_html
+
+def add_table_class(old_html):
+    class_table_search = 'class="table'
+    table_def_idx = old_html.find(class_table_search)
+    if table_def_idx == -1:
         return None
-    thead_end = html_str.find("</thead>")
-    tfoot_start = html_str.find("<tfoot>")
+    new_html = old_html[:table_def_idx] \
+               + 'class="table js-sort-table' \
+               + old_html[table_def_idx + len(class_table_search):]
+    return new_html
+
+def fix_sort_table(old_html):
+    new_html = add_table_class(old_html)
+    if new_html is None:
+        return None
+    thead_start = new_html.find("<thead>")
+    thead_end = new_html.find("</thead>")
+    tfoot_start = new_html.find("<tfoot>")
     if tfoot_start == -1:
         return None
-    html_content = html_str.replace('table-bordered', 'table-bordered sortable')
+
     thead_simple = """<thead><tr>
                         <th width="100%">Name</th>
                         <th>Remarks</th>
-                        <th>Stack</th>
-                        <th>Code</th>
-                        <th>Static</th>
+                        <th class=\"js-sort-number\">Stack</th>
+                        <th class=\"js-sort-number\">Code</th>
+                        <th class=\"js-sort-number\">Static</th>
                         </tr>
                         </thead>
 			        """
-    html_content = html_content[:thead_start] + thead_simple + html_content[thead_end:]
-    title_start = html_content.find("<title>")
+    new_html = new_html[:thead_start] + thead_simple + new_html[thead_end:]
+    title_start = new_html.find("<title>")
     sort_script = '\n<script src="../static/js/sorttable.js"></script>\n'
-    html_content = html_content[:title_start] + sort_script + html_content[title_start:]
-
+    new_html = new_html[:title_start] + sort_script + new_html[title_start:]
+    """
     bottom_row_regex = r"<tr>\n +<th.colspan=\"[0-9]\">&sum"
     tr_modification = '<tr class="sortbottom">'
-    match_res = re.finditer(bottom_row_regex, html_content, re.MULTILINE)
+    match_res = re.finditer(bottom_row_regex, new_html, re.MULTILINE)
     if match_res is not None:
         total_bottom_rows = sum(1 for e in match_res)
         for i in range(0, total_bottom_rows):
-            regex_res = re.search(bottom_row_regex, html_content)
+            regex_res = re.search(bottom_row_regex, new_html)
             tr_start = regex_res.start()
-            html_content = html_content[:tr_start] + tr_modification+ html_content[tr_start+len("<tr>"):]
-
-    return html_content
+            new_html = new_html[:tr_start] + tr_modification + new_html[tr_start + len("<tr>"):]
+    """
+    return new_html
 
 
 def generate_html(link):
@@ -96,6 +115,7 @@ def generate_html(link):
         return
     r = requests.get(url_base + link)
     html_content = r.text
+    html_content = fix_jquery(html_content)
     table_html = fix_sort_table(html_content)
     if table_html is not None:
         html_content = table_html
@@ -106,16 +126,16 @@ def generate_html(link):
         html_content = html_content.replace('href="/"', 'href="../index.html"')
     else:
         # due to fix_sort_table already adding .. to static
-        html_content = html_content.replace('src="../static', 'src="static') 
-        html_content = html_content.replace('href="../static','href="static')
+        html_content = html_content.replace('src="../static', 'src="static')
+        html_content = html_content.replace('href="../static', 'href="static')
         html_content = html_content.replace('href="/"', 'href="index.html"')
-    html_file_name = replace_html_encode(link[:-1])+".html"
+    html_file_name = replace_html_encode(link[:-1]) + ".html"
     if html_file_name.startswith("/"):
-        html_file_name=html_file_name[1:]
-        
+        html_file_name = html_file_name[1:]
+
     if html_file_name.startswith("path/"):
-        compact_path = html_file_name[len("path/"):].replace("/","_")
-        html_file_name = "path/"+compact_path
+        compact_path = html_file_name[len("path/"):].replace("/", "_")
+        html_file_name = "path/" + compact_path
 
     html_file_path = dir_out.joinpath(html_file_name)
     # Create dirs for html page if they do not exist
@@ -156,10 +176,10 @@ def local_html():
     if not os.path.exists(pages_dir):
         os.makedirs(pages_dir)
     if not os.path.exists(static_dir):
-        os.makedirs(static_dir) 
-    # Copy html static dir (css,js,etc) to output
+        os.makedirs(static_dir)
+        # Copy html static dir (css,js,etc) to output
     distutils.dir_util.copy_tree(str(script_root.joinpath("static")),
-                                    str(static_dir))
+                                 str(static_dir))
     index = requests.get(url_base)
     index_html_path = dir_out.joinpath("index.html")
     index_file = open(index_html_path, "w+")
@@ -177,7 +197,7 @@ def local_html():
         process_link(link)
     for plink in pending_links:
         process_link(plink)
-        
+
     print("Updating link references")
     for info in parsed_pages:
         html_content = open(info["file"], "r").read()
@@ -195,8 +215,8 @@ def local_html():
             if info["file"] == index_html_path:
                 if html_local_ref != "all.html":
                     html_local_ref = "path/" + html_local_ref
-            old_href = 'href="'+link+'"'
-            new_href = 'href="'+html_local_ref+'"'
+            old_href = 'href="' + link + '"'
+            new_href = 'href="' + html_local_ref + '"'
             html_content = html_content.replace(old_href, new_href)
         new_html = open(info["file"], "w+")
         new_html.write(html_content)
