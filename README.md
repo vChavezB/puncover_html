@@ -34,6 +34,8 @@ puncover --elf_file My_Cool_project.elf --gcc_tools_base /my_toolchain/bin/arm-n
 puncover_html.py HTML_OUT_PATH
 ```
 
+3. Copy static folder of this repo to your HTML_OUT_PATH (See todos)
+
 ## TODOS
 
 - Fix sort row for the columns stack,code,remarks. Current implementation only sorts code column independent of column clicked. Check static/js/sorttable.js. 
