@@ -36,6 +36,12 @@ puncover_html.py HTML_OUT_PATH
 
 ## TODOS
 
-- Add feature to look for symbols.
+- Add feature to look for symbols (i.e. button "Analyze text snippet"). 
+   - Priority: LOW
+     Puncover does this by using [rack.html.jinja](https://github.com/HBehrens/puncover/blob/3ca21079d1cda26e49070a38e75a473a1109859b/puncover/renderers.py#L342) template and the info it has on symbols.
+     - Javascript to index all symbols
+     - Look for symbols in the text editor
+     - Add the stats simlar to the rack.html.jinja 
+     Feature is welcomed but not necessary to analyze reports with CI/CD
 
 
