@@ -42,6 +42,7 @@ puncover_html.py HTML_OUT_PATH
      - Javascript to index all symbols
      - Look for symbols in the text editor
      - Add the stats simlar to the rack.html.jinja 
-     Feature is welcomed but not necessary to analyze reports with CI/CD
+     
+     Feature is wished but not necessary to analyze reports with CI/CD.
 
 
