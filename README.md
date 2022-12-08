@@ -12,9 +12,26 @@ Puncover is a nice tool to check locally for the information provided by map fil
 to install the toolchain to see the output of puncover. I rather have an offline  HTML (e.g., codechecker, pvs studio, cppcheck) which I can
 integrate in CI/CD.
 
+## How to Use
+
+1. Run puncover
+
+Separate terminal
+
+puncover --elf_file My_Cool_project.elf --gcc_tools_base /my_toolchain/bin/arm-none-eabi-
+
+Background 
+
+puncover --elf_file My_Cool_project.elf --gcc_tools_base /my_toolchain/bin/arm-none-eabi- &
+
+2. Run this script
+
+puncover_html.py Your_Desired_out_path
+
 ## TODOS
 
 - Fix sort row for the columns stack,code,remarks. Current implementation only sorts code column independent of column clicked. Check static/js/sorttable.js. 
 - Add feature to look for symbols.
 - Copy static folder to html output
+
 
