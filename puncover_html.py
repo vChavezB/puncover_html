@@ -58,7 +58,7 @@ def add_footer(old_html):
     puncover_html_footer.replace("VERSION","v"+version)
     footer_end_str = "</div>"
     footer_end = footer_start + old_html[footer_start:].find(footer_end_str)
-    new_html = old_html[:footer_end] + puncover_html_footer + old_html[:footer_end]
+    new_html = old_html[:footer_end] + puncover_html_footer + old_html[footer_end:]
     return new_html
 
 def fix_jquery(old_html):
