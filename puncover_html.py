@@ -55,7 +55,7 @@ def add_footer(old_html):
     puncover_html_footer = """\n<p  style="color:#808080">Offline html copy built by 
 			      <a href="https://github.com/vChavezB/puncover_html" target="_blank">Puncover HTML</a>VERSION</p>\n
 			   """
-    puncover_html_footer.replace("VERSION","v"+version)
+    puncover_html_footer = puncover_html_footer.replace("VERSION","v"+version)
     footer_end_str = "</div>"
     footer_end = footer_start + old_html[footer_start:].find(footer_end_str)
     new_html = old_html[:footer_end] + puncover_html_footer + old_html[footer_end:]
