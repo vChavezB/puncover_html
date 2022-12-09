@@ -7,6 +7,8 @@ import os
 import argparse
 import distutils.dir_util
 
+version = "1.1.0"
+
 url_base = "http://127.0.0.1:5000/"
 
 parser = argparse.ArgumentParser(
@@ -47,6 +49,17 @@ def get_links(html_content):
         links.append('/all/')
     return links
 
+def add_footer(old_html):
+    footer_find = '<div id="page-footer">'
+    footer_start = old_html.find(footer_find)
+    puncover_html_footer = """\n<p  style="color:#808080">Offline html copy built by 
+			      <a href="https://github.com/vChavezB/puncover_html" target="_blank">Puncover HTML</a>VERSION</p>\n
+			   """
+    puncover_html_footer.replace("VERSION","v"+version)
+    footer_end_str = "</div>"
+    footer_end = footer_start + old_html[footer_start:].find(footer_end_str)
+    new_html = old_html[:footer_end] + puncover_html_footer + old_html[:footer_end]
+    return new_html
 
 def fix_jquery(old_html):
     script_find = "<script"
@@ -116,6 +129,7 @@ def generate_html(link):
     r = requests.get(url_base + link)
     html_content = r.text
     html_content = fix_jquery(html_content)
+    html_content = add_footer(html_content)
     table_html = fix_sort_table(html_content)
     if table_html is not None:
         html_content = table_html
@@ -184,7 +198,9 @@ def local_html():
     index = requests.get(url_base)
     index_html_path = dir_out.joinpath("index.html")
     index_file = open(index_html_path, "w+")
-    html_content = replace_static_path(index.text)
+    html_content = add_footer(index.text)
+    html_content = fix_jquery(html_content):
+    html_content = replace_static_path(html_content)
     table_html = fix_sort_table(html_content)
     if table_html is not None:
         html_content = table_html
