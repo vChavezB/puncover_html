@@ -199,7 +199,7 @@ def local_html():
     index_html_path = dir_out.joinpath("index.html")
     index_file = open(index_html_path, "w+")
     html_content = add_footer(index.text)
-    html_content = fix_jquery(html_content):
+    html_content = fix_jquery(html_content)
     html_content = replace_static_path(html_content)
     table_html = fix_sort_table(html_content)
     if table_html is not None:
