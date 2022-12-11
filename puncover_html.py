@@ -79,6 +79,10 @@ def add_table_class(old_html):
     return new_html
 
 def fix_sort_table(old_html):
+    callees_found = old_html.find("Callees") != -1
+    # If it has callees its not a table that needs to be fixed
+    if callees_found:
+        return None
     new_html = add_table_class(old_html)
     if new_html is None:
         return None
