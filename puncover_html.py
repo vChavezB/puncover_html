@@ -5,7 +5,7 @@ import pathlib
 import re
 import os
 import argparse
-import distutils.dir_util
+import shutil
 
 version = "1.1.0"
 
@@ -190,17 +190,17 @@ def get_local_html(puncover_url):
 
 def local_html():
     print("Processing main page")
-    pages_dir = dir_out.joinpath("path")
-    static_dir = dir_out.joinpath("static")
+    static_dir_in = script_root.joinpath("static")
+    pages_dir_out = dir_out.joinpath("path")
+    static_dir_out = dir_out.joinpath("static")
     if not os.path.exists(dir_out):
         os.makedirs(dir_out)
-    if not os.path.exists(pages_dir):
-        os.makedirs(pages_dir)
-    if not os.path.exists(static_dir):
-        os.makedirs(static_dir)
-        # Copy html static dir (css,js,etc) to output
-    distutils.dir_util.copy_tree(str(script_root.joinpath("static")),
-                                 str(static_dir))
+    if not os.path.exists(pages_dir_out):
+        os.makedirs(pages_dir_out)
+    if os.path.exists(static_dir_out):
+        shutil.rmtree(static_dir_out)
+    # Copy html static dir (css,js,etc) to output
+    shutil.copytree(static_dir_in, static_dir_out)
     index = requests.get(url_base)
     index_html_path = dir_out.joinpath("index.html")
     index_file = open(index_html_path, "w+")
