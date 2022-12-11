@@ -5,7 +5,7 @@ import pathlib
 import re
 import os
 import argparse
-import shutil 
+import shutil
 
 version = "1.1.0"
 
