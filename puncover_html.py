@@ -97,12 +97,12 @@ def fix_sort_table(old_html):
                         <th>Remarks</th>
 		   """
     if stack_col:
-        thead_simple+='\n\t\t\t<th class=\"js-sort-number\">Stack</th>'
+        thead_simple+='\n\t\t\t\t<th class=\"js-sort-number\">Stack</th>'
     if code_col:
-        thead_simple+='\n\t\t\t<th class=\"js-sort-number\">Code</th>'
+        thead_simple+='\n\t\t\t\t<th class=\"js-sort-number\">Code</th>'
     if static_col:
-        thead_simple+='\n\t\t\t<th class=\"js-sort-number\">Static</th>\n'
-    thead_simple+='\n\t</tr></thead>\n'
+        thead_simple+='\n\t\t\t\t<th class=\"js-sort-number\">Static</th>\n'
+    thead_simple+='\n\t\t</tr>\n'
     new_html = new_html[:thead_start] + thead_simple + new_html[thead_end:]
     title_start = new_html.find("<title>")
     sort_script = '\n<script src="../static/js/sorttable.js"></script>\n'
