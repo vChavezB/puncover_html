@@ -7,7 +7,7 @@ import os
 import argparse
 import shutil
 
-version = "1.1.0"
+version = "1.2.1"
 
 url_base = "http://127.0.0.1:5000/"
 
