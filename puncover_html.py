@@ -190,16 +190,17 @@ def get_local_html(puncover_url):
 
 def local_html():
     print("Processing main page")
+    static_dir_in = script_root.joinpath("static")
     pages_dir_out = dir_out.joinpath("path")
     static_dir_out = dir_out.joinpath("static")
     if not os.path.exists(dir_out):
         os.makedirs(dir_out)
     if not os.path.exists(pages_dir_out):
         os.makedirs(pages_dir_out)
-    if not os.path.exists(static_dir_out):
-        os.makedirs(static_dir_out)
+    if os.path.exists(static_dir_out):
+        shutil.rmtree(static_dir_out)
     # Copy html static dir (css,js,etc) to output
-    shutil.copytree(script_root.joinpath("static"), static_dir_out)
+    shutil.copytree(static_dir_out, static_dir_in)
     index = requests.get(url_base)
     index_html_path = dir_out.joinpath("index.html")
     index_file = open(index_html_path, "w+")
