@@ -199,7 +199,7 @@ def local_html():
     if not os.path.exists(static_dir_out):
         os.makedirs(static_dir_out)
     # Copy html static dir (css,js,etc) to output
-    shutil.copytree(script_root.joinpath("static")), static_dir_out)
+    shutil.copytree(script_root.joinpath("static"), static_dir_out)
     index = requests.get(url_base)
     index_html_path = dir_out.joinpath("index.html")
     index_file = open(index_html_path, "w+")
