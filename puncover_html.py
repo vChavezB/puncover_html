@@ -79,6 +79,10 @@ def add_table_class(old_html):
     return new_html
 
 def fix_sort_table(old_html):
+    function_page = old_html.find("<th>Function</th>") != -1
+    # If its a function page no need to fix table
+    if function_page:
+        return None
     new_html = add_table_class(old_html)
     if new_html is None:
         return None
