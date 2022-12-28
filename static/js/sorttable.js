@@ -1,25 +1,3 @@
-/*
-  SortTable
-  version 2
-  7th April 2007
-  Stuart Langridge, http://www.kryogenix.org/code/browser/sorttable/
-
-  Instructions:
-  Download this file
-  Add <script src="sorttable.js"></script> to your HTML
-  Add class="sortable" to any table you'd like to make sortable
-  Click on the headers to sort
-
-  Thanks to many, many people for contributions and suggestions.
-  Licenced as X11: http://www.kryogenix.org/code/browser/licence.html
-  This basically means: do what you want with it.
-*/
-/* Copyright 2022, Victor Chavez (chavez-bermudez@fh-aachen.de)
-   SPDX-License-Identifier: GPL-3.0-or-later
-   
-   Added custom support to sort the columns of the puncover website
-*/
-
 /**
  * sort-table.js
  * A pure JavaScript (no dependencies) solution to make HTML
@@ -31,6 +9,12 @@
  *
  * latest version available at https://github.com/tyleruebele/sort-table
  */
+/* Copyright 2022, Victor Chavez (chavez-bermudez@fh-aachen.de)
+   SPDX-License-Identifier: GPL-3.0-or-later
+   
+   Added custom support to sort the columns of the puncover website
+*/
+
 
 /**
  * Sort the rows in a HTML Table
