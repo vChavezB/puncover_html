@@ -6,6 +6,7 @@ import re
 import os
 import argparse
 import shutil
+import hashlib
 
 version = "1.3.0"
 
@@ -25,6 +26,12 @@ parsed_pages = []
 puncover_links = []
 pending_links = []
 
+def hash_filename(filename):
+    """Generate a hash for filenames longer than 20 characters."""
+    if len(filename) > 20:
+        hashed = hashlib.sha256(filename.encode()).hexdigest()
+        return f"{filename[:10]}_{hashed[:10]}"
+    return filename
 
 def replace_static_path(html_raw):
     return html_raw.replace("/static", "static")
@@ -161,6 +168,8 @@ def generate_html(link):
     if html_file_name.startswith("path/"):
         compact_path = html_file_name[len("path/"):].replace("/", "_")
         html_file_name = "path/" + compact_path
+
+    html_file_name = hash_filename(html_file_name)
 
     html_file_path = dir_out.joinpath(html_file_name)
     # Create dirs for html page if they do not exist
