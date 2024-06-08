@@ -255,7 +255,7 @@ def local_html():
             new_href = 'href="' + html_local_ref + '"'
             html_content = html_content.replace(old_href, new_href)
         new_html = open(info["file"], "w+")
-	print("writing file %s",info["file"])
+        print("writing file %s",info["file"])
         new_html.write(html_content)
 
 
