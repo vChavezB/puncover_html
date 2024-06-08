@@ -31,7 +31,7 @@ def hash_filename(filename):
     if len(filename) > 20:
         hashed = hashlib.sha256(filename.encode()).hexdigest()
         return f"{filename[:10]}_{hashed[:10]}"
-    return filename
+    return filename+".html"
 
 def replace_static_path(html_raw):
     return html_raw.replace("/static", "static")
@@ -255,7 +255,7 @@ def local_html():
             new_href = 'href="' + html_local_ref + '"'
             html_content = html_content.replace(old_href, new_href)
         new_html = open(info["file"], "w+")
-        print("writing file %s",info["file"])
+        print("writing file ",info["file"])
         new_html.write(html_content)
 
 
