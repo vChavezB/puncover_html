@@ -1,4 +1,4 @@
-# Copyright 2022, Victor Chavez (chavez-bermudez@fh-aachen.de)
+# Copyright 2022-2025, Victor Chavez (vchavezb@protonmail.com)
 # SPDX-License-Identifier: GPL-3.0-or-later
 import requests
 import pathlib
@@ -255,7 +255,6 @@ def local_html():
             new_href = 'href="' + html_local_ref + '"'
             html_content = html_content.replace(old_href, new_href)
         new_html = open(info["file"], "w+")
-        print("writing file ",info["file"])
         new_html.write(html_content)
 
 
